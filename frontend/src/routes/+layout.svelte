@@ -5,7 +5,7 @@
 </script>
 
 <main class="flex min-h-screen flex-col">
-	<header class="bg-yellow-300">
+	<header class="mb-4 bg-yellow-300">
 		<Header />
 	</header>
 
