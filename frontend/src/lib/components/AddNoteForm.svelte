@@ -31,13 +31,17 @@
 	<div class="w-full text-white">
 		<label class="floating-label text-slate-300" for="importance"> Importance </label>
 		<select name="importance" id="importance" class="select">
+			<option class="select-neutral">Personal</option>
 			<option class="select-neutral">Important</option>
-			<option class="select-neutral">Warning</option>
-			<option class="select-neutral">Standard</option>
+			<option class="select-neutral">Work</option>
 		</select>
 	</div>
 	<div>
-		<button class="btn border-green-600 bg-green-700 shadow-green-900 btn-primary" type="submit">
+		<button
+			class="btn border-green-600 bg-green-700 shadow-green-900 btn-primary"
+			type="submit"
+			onclick={handleClose}
+		>
 			Add Note
 		</button>
 		<button class="btn btn-secondary" type="button" onclick={handleClose}> Cancel </button>
