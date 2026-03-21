@@ -1,7 +1,23 @@
 <script lang="ts">
 	import AddNoteForm from '$lib/components/AddNoteForm.svelte';
+	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
+	import { getNotes } from '$lib/apis/notes';
+	import type { ReadNote } from '$lib/apis/notes';
 
 	let isOpen = $state(false);
+
+	let { data } = $props<{ data: PageData }>();
+
+	let notes: ReadNote[] = $derived(data.notes);
+
+	async function loadNotes(search?: string) {
+		notes = await getNotes(search);
+	}
+
+	onMount(() => {
+		loadNotes();
+	});
 
 	function closeModal() {
 		isOpen = false;
@@ -42,3 +58,8 @@
 		</div>
 	</div>
 {/if}
+
+{#each notes as note (note.id)}
+	<h1>{note.title}</h1>
+	<h2>{note.description}</h2>
+{/each}

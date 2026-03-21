@@ -1,6 +1,6 @@
 export const BASE_API = 'http://localhost:8000';
 
-interface ReadNote {
+export interface ReadNote {
 	id: number;
 	title: string;
 	description: string | null;
