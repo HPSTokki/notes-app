@@ -1,12 +1,19 @@
 export const BASE_API = 'http://localhost:8000';
 
-export interface ReadNote {
+export type ReadNote = {
 	id: number;
 	title: string;
-	description: string | null;
+	description?: string | null;
+	importance?: string | null;
 	create_at: string;
 	updated_at: string;
-}
+};
+
+export type CreateNote = {
+	title: string;
+	description?: string | null;
+	importance?: string | null;
+};
 
 export async function getNotes(search?: string): Promise<ReadNote[]> {
 	const url = new URL(`${BASE_API}/notes/`);
@@ -24,4 +31,22 @@ export async function getNotes(search?: string): Promise<ReadNote[]> {
 	const data: { notes: ReadNote[] } = await result.json();
 
 	return data.notes;
+}
+
+export async function createNotes(data: CreateNote) {
+	const url = new URL(`${BASE_API}/notes/`);
+
+	const response = await fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(data)
+	});
+
+	if (!response.ok) {
+		const error = await response.json();
+		throw new Error(error.detail);
+	}
+	return response.json();
 }

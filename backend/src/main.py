@@ -7,7 +7,7 @@ from src.routes import notes_route
 
 app = FastAPI()
 
-origins = ["http://localhost:8000", "http://localhost"]
+origins = ["http://localhost:8000", "http://localhost", "http://localhost:5173"]
 
 app.add_middleware(
     CORSMiddleware,

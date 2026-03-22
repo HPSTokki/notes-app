@@ -1,7 +1,22 @@
 <script lang="ts">
-	let { onClose }: { onClose: () => void } = $props();
+	import type { CreateNote } from '$lib/apis/notes';
+	let { onClose, onSubmit }: { onClose: () => void; onSubmit: (data: CreateNote) => void } =
+		$props();
 
 	function handleClose() {
+		onClose();
+	}
+	function handleSubmit(e: SubmitEvent) {
+		e.preventDefault();
+		const form = new FormData(e.currentTarget as HTMLFormElement);
+
+		const data: CreateNote = {
+			title: form.get('title') as string,
+			description: form.get('description') as string,
+			importance: form.get('importance') as string
+		};
+
+		onSubmit(data);
 		onClose();
 	}
 </script>
@@ -9,10 +24,7 @@
 <form
 	action="POST"
 	class="flex h-auto w-full flex-col items-center justify-center gap-4 rounded bg-green-900 p-6 shadow-sm"
-	onsubmit={(e) => {
-		e.preventDefault();
-		onClose();
-	}}
+	onsubmit={handleSubmit}
 >
 	<div class="w-full text-white">
 		<label class="floating-label text-slate-300" for="title"> Title </label>
@@ -37,11 +49,7 @@
 		</select>
 	</div>
 	<div>
-		<button
-			class="btn border-green-600 bg-green-700 shadow-green-900 btn-primary"
-			type="submit"
-			onclick={handleClose}
-		>
+		<button class="btn border-green-600 bg-green-700 shadow-green-900 btn-primary" type="submit">
 			Add Note
 		</button>
 		<button class="btn btn-secondary" type="button" onclick={handleClose}> Cancel </button>

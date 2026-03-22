@@ -2,8 +2,8 @@
 	import AddNoteForm from '$lib/components/AddNoteForm.svelte';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import { getNotes } from '$lib/apis/notes';
-	import type { ReadNote } from '$lib/apis/notes';
+	import { createNotes, getNotes } from '$lib/apis/notes';
+	import type { ReadNote, CreateNote } from '$lib/apis/notes';
 
 	let isOpen = $state(false);
 
@@ -13,6 +13,11 @@
 
 	async function loadNotes(search?: string) {
 		notes = await getNotes(search);
+	}
+
+	async function makeNotes(data: CreateNote) {
+		await createNotes(data);
+		isOpen = false;
 	}
 
 	onMount(() => {
@@ -54,7 +59,7 @@
 {#if isOpen}
 	<div class="modal-open modal">
 		<div class="modal-box">
-			<AddNoteForm onClose={closeModal} />
+			<AddNoteForm onClose={closeModal} onSubmit={makeNotes} />
 		</div>
 	</div>
 {/if}
