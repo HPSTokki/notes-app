@@ -50,3 +50,22 @@ export async function createNotes(data: CreateNote) {
 	}
 	return response.json();
 }
+
+export async function deleteNotes(id: number) {
+	const url = new URL(`${BASE_API}/notes/${id}`);
+
+	const response = await fetch(url, {
+		method: 'DELETE'
+	});
+
+	if (!response.ok) {
+		const error = await response.json();
+		throw new Error(error.detail);
+	}
+
+	if (response.status === 204) {
+		return null;
+	}
+
+	return response.json();
+}

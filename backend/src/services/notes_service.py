@@ -17,15 +17,12 @@ class NotesService:
         await self.session.refresh(note)
         return ReadNote.model_validate(note, from_attributes=True)
 
-    async def get_notes(self, search: str | None = None) -> ReadNote | ListReadNote:
+    async def get_notes(self, search: str | None = None) -> ListReadNote:
         query = select(Notes)
         if search:
             query = query.where(col(Notes.title).ilike(f"%{search}%"))
         result = await self.session.execute(query)
         notes = result.scalars().all()
-
-        if len(notes) == 1:
-            return ReadNote.model_validate(notes[0], from_attributes=True)
 
         return ListReadNote(
             notes=[

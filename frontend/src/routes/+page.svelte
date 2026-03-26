@@ -2,7 +2,7 @@
 	import AddNoteForm from '$lib/components/AddNoteForm.svelte';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import { createNotes, getNotes } from '$lib/apis/notes';
+	import { createNotes, getNotes, deleteNotes } from '$lib/apis/notes';
 	import type { ReadNote, CreateNote } from '$lib/apis/notes';
 
 	let isOpen = $state(false);
@@ -18,6 +18,11 @@
 	async function makeNotes(data: CreateNote) {
 		await createNotes(data);
 		isOpen = false;
+	}
+
+	async function deleteNoteHandle(id: number) {
+		await deleteNotes(id);
+		await loadNotes();
 	}
 
 	onMount(() => {
@@ -64,7 +69,23 @@
 	</div>
 {/if}
 
-{#each notes as note (note.id)}
-	<h1>{note.title}</h1>
-	<h2>{note.description}</h2>
-{/each}
+<div class="flex gap-4 border-t border-t-slate-300 p-4">
+	{#each notes as note (note.id)}
+		<div class="card h-52 w-62 border border-green-600">
+			<div class="card-body">
+				<h1>
+					{note.title}
+				</h1>
+				<h2 class="label text-green-300">
+					{note.importance}
+				</h2>
+				<p>
+					{note.description}
+				</p>
+				<button class="btn btn-warning" type="submit" onclick={() => deleteNoteHandle(note.id)}>
+					Delete
+				</button>
+			</div>
+		</div>
+	{/each}
+</div>
